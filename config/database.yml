@@ -3,17 +3,15 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   host: db
+  username: postgres
+  password: postgres
 
 development:
   <<: *default
   database: hertz_development
-  username: postgres
-  password:
 
 test:
   <<: *default
   database: hertz_test
-  username: postgres
-  password:
   host: db
   port: 5432
