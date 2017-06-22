@@ -17,9 +17,3 @@ test:
   password:
   host: db
   port: 5432
-
-production:
-  <<: *default
-  database: hertz_production
-  username: hertz
-  password: <%= ENV['OCTANE-BACKEND_DATABASE_PASSWORD'] %>
