@@ -1,59 +1,38 @@
-RENT-A-CAR
+# RENT-A-CAR
 
-In this exercise you'll be building a car rental app - a simple JSON-based API
-that implements basic JWT authentication, user roles and several associated
-database models.
+In this exercise you'll be building a car rental app - a simple JSON-based API that implements basic JWT authentication, user roles and several associated database models.
 
-GENRAL SETUP
+# GENERAL SETUP
 
-The app is `dockerized` - it has functional `Dockerfile` and `docker-compose.yml` files.
-If you're familiar with Docker, you can probably skip this section. If you're not,
-we strongly encourage you to read about containers in general and Docker in
-particular, as it is an everyday tool in our backend development.
+**IMPORTANT**: To start off, please [duplicate](https://help.github.com/en/articles/duplicating-a-repository)  this repository to your own and send us a link to it when you're done. Please DO NOT fork our repo and DO NOT submit pull requests to it. Really, don't do it. If you do, your application will be rejected. Seriously. No kidding here, we're ruthless.
 
-Using Docker for the purposes of this task is optional, if it's too much for you,
-you can set the app up the regular way. The database we use is PostgreSQL, so we
-recommend you use it as well.
+The app is `dockerized` - it has functional `Dockerfile` and `docker-compose.yml` files. If you're familiar with Docker, you can probably skip this section. If you're not, we strongly encourage you to read about containers in general and Docker in particular, as it is an everyday tool in our backend development.
 
-THE APP
+Using Docker for the purposes of this task is optional, if it's too much for you, you can set the app up the regular way. The database we use is PostgreSQL, so we recommend you use it as well.
 
-The app itself is a typical Rails API, which means it does not have any frontend
-assets part or views - all responses rendered in controller actions are JSONs.
-The authentication is handled by generating JWT tokens which are then attached in the request's
-header. All the work is done by the preinstalled gem [Knock](https://github.com/nsarno/knock), which
-handles everything out of the box and adds the `current_user` helper in all controllers it's
-used in.
+# THE APP
 
-The tl;dr version of JWT flow is - user submits email and password to the sign-in endpoint,
-the endpoint returns a `token`, that is then attached to every subsequent request's
-`Authorization` header and used to authorize the request's maker.
+The app itself is a typical Rails API, which means it does not have any frontend assets part or views - all responses rendered in controller actions are JSONs. The authentication is handled by generating JWT tokens which are then attached in the request's header. All the work is done by the preinstalled gem [Knock](https://github.com/nsarno/knock), which handles everything out of the box and adds the `current_user` helper in all controllers it's used in.
 
-Some basic models and migrations are already in place as a starting point/suggestion
-of the direction of further development. These models are:
+The tl;dr version of JWT flow is - user submits email and password to the sign-in endpoint, the endpoint returns a `token`, that is then attached to every subsequent request's `Authorization` header and used to authorize the request's maker.
+
+Some basic models and migrations are already in place as a starting point/suggestion of the direction of further development. These models are:
 
 - User
 - Office
 - Car
 
-All these models have some columns in the database - you don't have to use all or any of them,
-it's just a suggestion as to how they could behave. Feel free to implement your own
-fields if desired/necessary.
+All these models have some columns in the database - you don't have to use all or any of them, it's just a suggestion as to how they could behave. Feel free to implement your own fields if desired/necessary.
 
-THE GOAL
+# THE GOAL
 
-The goal of this task is to create an API endpoint, available only to a signed-in
-Owner, that allows them to assign an `available` (not being rented at the time)
-car to a Customer by passing their IDs and the rental time. The car being rented
- MUST belong to the Owner's office and it MUST be available (not already rented to
-  someone else), so you'll have to implement some kind of validation for both of these cases.
+The goal of this task is to create an API endpoint, available only to a signed-in Owner, that allows them to assign an `available` (not being rented at the time) car to a Customer by passing their IDs and the rental time. The car being rented MUST belong to the Owner's office and it MUST be available (not already rented to someone else), so you'll have to implement some kind of validation for both of these cases.
 
 Additionally the User needs to have 2 separate roles implemented:
 - `Owner`, who runs a single office and `cannot` rent cars him/herself,
 - `Customer`, who can rent cars from any office, but cannot have Owner's access privileges.
 
-There are multiple ways to achieve that separation, use any you want, just remember that
-all Users need to use the same database table and the User model as it employs the
-`has_secure_password` method used for authentication.
+There are multiple ways to achieve that separation, use any you want, just remember that all Users need to use the same database table and the User model as it employs the `has_secure_password` method used for authentication.
 
 In bullet points:
 - Implement user authentication in a rentals controller
@@ -65,18 +44,4 @@ In bullet points:
 
 SPECS
 
-The entire flow is covered by a spec file in the RSPec `/spec` folder, that has to pass all green
-- it will require you to add some models, routes and controllers to the application and some
-FactoryBot factories as well. However please don't change the specs themselves (specs
-being the `it { }` blocks), as they test the correctness of your implementation. Feel free though
-to add any specs you might find necessary.
-
-
-
-
-
-
-
-
-
-
+The entire flow is covered by a spec file in the RSPec `/spec` folder, that has to pass all green - it will require you to add some models, routes and controllers to the application and some FactoryBot factories as well. However please don't change the specs themselves (specs being the `it { }` blocks), as they test the correctness of your implementation. Feel free though to add any specs you might find necessary.
