@@ -48,8 +48,8 @@ car to a Customer by passing their IDs and the rental time. The car being rented
   someone else), so you'll have to implement some kind of validation for both of these cases.
 
 Additionally the User needs to have 2 separate roles implemented:
-- The Owner, who runs a single office and `cannot` rent cars him/herself,
-- The Customer, who can rent cars from any office, but cannot have Owner's access privileges.
+- `Owner`, who runs a single office and `cannot` rent cars him/herself,
+- `Customer`, who can rent cars from any office, but cannot have Owner's access privileges.
 
 There are multiple ways to achieve that separation, use any you want, just remember that
 all Users need to use the same database table and the User model as it employs the
@@ -68,7 +68,8 @@ SPECS
 The entire flow is covered by a spec file in the RSPec `/spec` folder, that has to pass all green
 - it will require you to add some models, routes and controllers to the application and some
 FactoryBot factories as well. However please don't change the specs themselves (specs
-being the `it { }` blocks), as they test the correctness of your implementation.
+being the `it { }` blocks), as they test the correctness of your implementation. Feel free though
+to add any specs you might find necessary.
 
 
 
