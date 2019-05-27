@@ -10,41 +10,41 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170516122232) do
+ActiveRecord::Schema.define(version: 2017_05_16_122232) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "cars", force: :cascade do |t|
-    t.string   "model"
-    t.string   "make"
-    t.string   "year"
-    t.integer  "mileage"
-    t.string   "condition"
+  create_table "cars", id: :serial, force: :cascade do |t|
+    t.string "model"
+    t.string "make"
+    t.string "year"
+    t.integer "mileage"
+    t.string "condition"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "offices", force: :cascade do |t|
-    t.string   "street"
-    t.string   "postal_code"
-    t.string   "city"
-    t.string   "phone_number"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+  create_table "offices", id: :serial, force: :cascade do |t|
+    t.string "street"
+    t.string "postal_code"
+    t.string "city"
+    t.string "phone_number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string   "email"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "street"
-    t.string   "city"
-    t.string   "postal_code"
-    t.string   "phone_number"
-    t.string   "password_digest"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+  create_table "users", id: :serial, force: :cascade do |t|
+    t.string "email"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "street"
+    t.string "city"
+    t.string "postal_code"
+    t.string "phone_number"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end
