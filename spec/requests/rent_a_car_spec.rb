@@ -5,7 +5,7 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
   let(:office) { create :office, owner: owner }
   let(:car) { create :car, office: office }
   let(:rented_from) { DateTime.now + 1.day }
-  let(:rented_from) { DateTime.now + 8.days }
+  let(:rented_to) { DateTime.now + 8.days }
 
   let(:action) do
     post '/rentals', params: params, headers: headers
@@ -75,13 +75,14 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
     end # office invalid
 
     context 'when the car is already rented' do
+      let(:other_customer) { create :customer }
       before do
         create(
           :rental,
-          customer:    customer,
+          customer:    other_customer,
           car:         car,
-          rented_from: params[:rented_from],
-          rented_to:   params[:rented_to]
+          rented_from: DateTime.parse(params[:rented_from]) - 1.day,
+          rented_to:   DateTime.parse(params[:rented_to]) + 1.day,
         )
       end
 
