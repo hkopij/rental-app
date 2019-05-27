@@ -42,6 +42,6 @@ In bullet points:
 - Success response contains serialized customer, rental and car data
 - Error responses have 422 status code and error messages.
 
-SPECS
+# SPECS
 
 The entire flow is covered by a spec file in the RSPec `/spec` folder, that has to pass all green - it will require you to add some models, routes and controllers to the application and some FactoryBot factories as well. However please don't change the specs themselves (specs being the `it { }` blocks), as they test the correctness of your implementation. Feel free though to add any specs you might find necessary.
