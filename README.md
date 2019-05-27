@@ -1,4 +1,4 @@
-HERTZ
+RENT-A-CAR
 
 In this exercise you'll be building a car rental app - a simple JSON-based API
 that implements basic JWT authentication, user roles and several associated
