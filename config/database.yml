@@ -8,10 +8,10 @@ default: &default
 
 development:
   <<: *default
-  database: hertz_development
+  database: rent-a-car_development
 
 test:
   <<: *default
-  database: hertz_test
+  database: rent-a-car_test
   host: db
   port: 5432

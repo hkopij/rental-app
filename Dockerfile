@@ -7,7 +7,7 @@ RUN apt-get update -qq &&              \
                        libqtwebkit4 libqt4-dev xvfb \
                        nodejs
 
-ENV APP_HOME /hertz
+ENV APP_HOME /rent-a-car
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 

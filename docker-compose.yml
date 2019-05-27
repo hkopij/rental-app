@@ -14,4 +14,4 @@ services:
     links:
       - db
     volumes:
-      - .:/hertz
+      - .:/rent-a-car
