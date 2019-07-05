@@ -29,7 +29,7 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
 
     it 'returns Unauthorized status' do
       action
-      expect(response.status).to eq(403)
+      expect(response.status).to eq(401)
     end
   end # user not authenticated
 
