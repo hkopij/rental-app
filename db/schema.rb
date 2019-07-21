@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2017_05_16_122232) do
+ActiveRecord::Schema.define(version: 2019_07_21_220417) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,13 @@ ActiveRecord::Schema.define(version: 2017_05_16_122232) do
     t.string "year"
     t.integer "mileage"
     t.string "condition"
+    t.integer "office_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["office_id"], name: "index_cars_on_office_id"
+  end
+
+  create_table "customers", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -30,8 +37,24 @@ ActiveRecord::Schema.define(version: 2017_05_16_122232) do
     t.string "postal_code"
     t.string "city"
     t.string "phone_number"
+    t.integer "owner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["owner_id"], name: "index_offices_on_owner_id"
+  end
+
+  create_table "owners", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "rentals", force: :cascade do |t|
+    t.bigint "customer_id"
+    t.bigint "car_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["car_id"], name: "index_rentals_on_car_id"
+    t.index ["customer_id"], name: "index_rentals_on_customer_id"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
@@ -43,6 +66,7 @@ ActiveRecord::Schema.define(version: 2017_05_16_122232) do
     t.string "postal_code"
     t.string "phone_number"
     t.string "password_digest"
+    t.string "type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
