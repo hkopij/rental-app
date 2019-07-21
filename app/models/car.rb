@@ -1,2 +1,5 @@
 class Car < ApplicationRecord
+  belongs_to :office
+  has_many :rentals
+  has_many :customers, through: :rentals
 end
