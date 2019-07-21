@@ -26,7 +26,6 @@ FactoryBot.define do
   end
 
   factory :office do
-    owner
     street { 'Warszawska 1/1' }
     postal_code { '00-173' }
     city { 'Warszawa' }
@@ -34,7 +33,6 @@ FactoryBot.define do
   end
 
   factory :car do
-    office
     model { 'Honda' }
     make { 'Make' }
     year { '2000' }
@@ -45,7 +43,5 @@ FactoryBot.define do
   factory :rental do
     customer
     car
-    rented_from { '2019-07-29' }
-    rented_to { '2019-07-30' }
   end
 end
