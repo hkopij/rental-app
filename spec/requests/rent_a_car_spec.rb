@@ -8,7 +8,7 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
   let(:rented_to) { DateTime.now + 8.days }
 
   let(:action) do
-    post '/rentals', params: params, headers: headers
+    post '/rentals', params: { rental: params }, headers: headers
   end
 
   let(:params) do
@@ -81,8 +81,8 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
           :rental,
           customer:    other_customer,
           car:         car,
-          rented_from: DateTime.parse(params[:rented_from]) - 1.day,
-          rented_to:   DateTime.parse(params[:rented_to]) + 1.day,
+          rented_from: DateTime.parse(params[:rented_from].to_s) - 1.day,
+          rented_to:   DateTime.parse(params[:rented_to].to_s) + 1.day,
         )
       end
 

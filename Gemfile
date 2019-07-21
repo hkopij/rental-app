@@ -12,6 +12,7 @@ gem 'rack-cors', require: 'rack/cors'
 gem 'bcrypt', '~> 3.1.7'
 gem 'knock', '1.4.2'
 gem 'active_model_serializers'
+gem 'date_validator'
 
 group :development, :test do
   gem 'byebug', platform: :mri
