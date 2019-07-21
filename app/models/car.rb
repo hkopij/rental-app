@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Car < ApplicationRecord
   belongs_to :office
   has_many :rentals

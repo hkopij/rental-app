@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 RSpec.describe 'POST /office/:office_id/rentals', type: :request do
   let(:customer) { create :customer }
@@ -13,10 +15,10 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
 
   let(:params) do
     {
-      car_id:      car.id,
+      car_id: car.id,
       customer_id: customer.id,
       rented_from: rented_from,
-      rented_to:   rented_to
+      rented_to: rented_to
     }
   end
 
@@ -34,8 +36,8 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
   end # user not authenticated
 
   context 'when user is authenticated' do
-    let(:token) { Knock::AuthToken.new(payload: {sub: owner.id}).token }
-    let(:headers) { {'Authorization': "Bearer #{token}"} }
+    let(:token) { Knock::AuthToken.new(payload: { sub: owner.id }).token }
+    let(:headers) { { 'Authorization': "Bearer #{token}" } }
 
     context "when the car belongs to the Owner's office" do
       it 'creates a Rental' do
@@ -46,11 +48,11 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
         action
         expect(JSON.parse(response.body)).to eq(
           'customer_id' => customer.id,
-          'car_id' =>      car.id,
-          'car_make' =>    car.make,
-          'car_model' =>   car.model,
+          'car_id' => car.id,
+          'car_make' => car.make,
+          'car_model' => car.model,
           'rented_from' => Rental.last.rented_from.as_json,
-          'rented_to' =>   Rental.last.rented_to.as_json
+          'rented_to' => Rental.last.rented_to.as_json
         )
       end
     end # office valid
@@ -79,10 +81,10 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
       before do
         create(
           :rental,
-          customer:    other_customer,
-          car:         car,
+          customer: other_customer,
+          car: car,
           rented_from: DateTime.parse(params[:rented_from].to_s) - 1.day,
-          rented_to:   DateTime.parse(params[:rented_to].to_s) + 1.day,
+          rented_to: DateTime.parse(params[:rented_to].to_s) + 1.day
         )
       end
 

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 class RentalsController < ApplicationController
   before_action :authenticate

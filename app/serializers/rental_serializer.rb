@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RentalSerializer < ActiveModel::Serializer
   attribute :customer_id
   attribute :car_id

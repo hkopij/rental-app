@@ -1,5 +1,6 @@
-Knock.setup do |config|
+# frozen_string_literal: true
 
+Knock.setup do |config|
   ## User handle attribute
   ## ---------------------
   ##
@@ -35,7 +36,6 @@ Knock.setup do |config|
   ## Default:
   # config.current_user_from_token = -> (claims) { User.find claims['sub'] }
 
-
   ## Expiration claim
   ## ----------------
   ##
@@ -43,7 +43,6 @@ Knock.setup do |config|
   ##
   ## Default:
   # config.token_lifetime = 1.day
-
 
   ## Audience claim
   ## --------------
