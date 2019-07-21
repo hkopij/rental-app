@@ -51,6 +51,8 @@ ActiveRecord::Schema.define(version: 2019_07_21_220417) do
   create_table "rentals", force: :cascade do |t|
     t.bigint "customer_id"
     t.bigint "car_id"
+    t.datetime "rented_from"
+    t.datetime "rented_to"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["car_id"], name: "index_rentals_on_car_id"
