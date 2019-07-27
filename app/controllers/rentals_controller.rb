@@ -43,8 +43,22 @@ class RentalsController < ApplicationController
   end
 
   def validate_availiblity
-    rentals = @rental.car.rentals.where('rented_from <= ? OR rented_to >= ?',
+    rentals = @rental.car.rentals.all
+    # case #1, car is rented inside of requested period
+    rentals_1 = rentals.where('rented_from <= ? AND rented_to >= ?',
                                         @rental.rented_from, @rental.rented_to)
+    # case #2, car is rented at the beginning of requested period
+    rentals_2 = rentals.where('rented_from > ? AND rented_to >= ? AND rented_from <= ?',
+                                        @rental.rented_from, @rental.rented_to, @rental.rented_to)
+    # case #3, car is rented at the end of requested period
+    rentals_3 = rentals.where('rented_from <= ? AND rented_to <= ? AND rented_to > ?',
+                                        @rental.rented_from, @rental.rented_to, @rental.rented_from)
+    # case #4, car is rented for the whole time of requested period
+    rentals_4 = rentals.where('rented_from > ? AND rented_to < ?',
+                                        @rental.rented_from, @rental.rented_to)
+
+    rentals = rentals_1 + rentals_2 + rentals_3 + rentals_4
+
     if rentals.empty?
       @rental.save
       render json: @rental

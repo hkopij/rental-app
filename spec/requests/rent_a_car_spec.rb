@@ -76,7 +76,36 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
       end
     end # office invalid
 
-    context 'when the car is already rented' do
+    context 'when the car is already rented, but it will be free in requested time' do
+      let(:other_customer) { create :customer }
+      before do
+        create(
+          :rental,
+          customer: other_customer,
+          car: car,
+          rented_from: DateTime.parse(params[:rented_from].to_s) + 10.days,
+          rented_to: DateTime.parse(params[:rented_to].to_s) + 12.days
+        )
+      end
+
+      it 'creates a Rental' do
+        expect { action }.to change { Rental.count }.by(1)
+      end
+
+      it 'returns rental data' do
+        action
+        expect(JSON.parse(response.body)).to eq(
+          'customer_id' => customer.id,
+          'car_id' => car.id,
+          'car_make' => car.make,
+          'car_model' => car.model,
+          'rented_from' => Rental.last.rented_from.as_json,
+          'rented_to' => Rental.last.rented_to.as_json
+        )
+      end
+    end # car already rented, but free in requested time
+
+    context 'when the car is already rented inside of requested period' do
       let(:other_customer) { create :customer }
       before do
         create(
@@ -84,7 +113,7 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
           customer: other_customer,
           car: car,
           rented_from: DateTime.parse(params[:rented_from].to_s) - 1.day,
-          rented_to: DateTime.parse(params[:rented_to].to_s) + 1.day
+          rented_to: DateTime.parse(params[:rented_to].to_s) + 10.day
         )
       end
 
@@ -101,6 +130,87 @@ RSpec.describe 'POST /office/:office_id/rentals', type: :request do
         action
         expect(JSON.parse(response.body)).to eq('The car is already rented to someone else!')
       end
-    end # car already rented
+    end # car already rented inside of requested period
+
+    context 'when the car is already rented at the end of requested period' do
+      let(:other_customer) { create :customer }
+      before do
+        create(
+          :rental,
+          customer: other_customer,
+          car: car,
+          rented_from: DateTime.parse(params[:rented_from].to_s) - 3.days,
+          rented_to: DateTime.parse(params[:rented_to].to_s) - 1.day
+        )
+      end
+
+      it 'does not create a Rental' do
+        expect { action }.to_not change { Rental.count }
+      end
+
+      it 'returns 422 status' do
+        action
+        expect(response.status).to eq(422)
+      end
+
+      it 'returns error' do
+        action
+        expect(JSON.parse(response.body)).to eq('The car is already rented to someone else!')
+      end
+    end # car already rented at the end of requested period
+
+    context 'when the car is already rented at the beginning of requested period' do
+      let(:other_customer) { create :customer }
+      before do
+        create(
+          :rental,
+          customer: other_customer,
+          car: car,
+          rented_from: DateTime.parse(params[:rented_from].to_s) + 6.days,
+          rented_to: DateTime.parse(params[:rented_to].to_s) + 16.days
+        )
+      end
+
+      it 'does not create a Rental' do
+        expect { action }.to_not change { Rental.count }
+      end
+
+      it 'returns 422 status' do
+        action
+        expect(response.status).to eq(422)
+      end
+
+      it 'returns error' do
+        action
+        expect(JSON.parse(response.body)).to eq('The car is already rented to someone else!')
+      end
+    end # car already rented at the beginning of requested period
+
+    context 'when the car is already rented for whole time of requested period' do
+      let(:other_customer) { create :customer }
+      before do
+        create(
+          :rental,
+          customer: other_customer,
+          car: car,
+          rented_from: DateTime.parse(params[:rented_from].to_s) + 2.days,
+          rented_to: DateTime.parse(params[:rented_to].to_s) + 7.days
+        )
+      end
+
+      it 'does not create a Rental' do
+        expect { action }.to_not change { Rental.count }
+      end
+
+      it 'returns 422 status' do
+        action
+        expect(response.status).to eq(422)
+      end
+
+      it 'returns error' do
+        action
+        expect(JSON.parse(response.body)).to eq('The car is already rented to someone else!')
+      end
+    end # car already rented for whole time of requested period
   end # user authenticated
 end
