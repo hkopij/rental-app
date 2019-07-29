@@ -11,7 +11,6 @@ class CreateUser < ActiveRecord::Migration[5.0]
       t.string :postal_code
       t.string :phone_number
       t.string :password_digest
-      t.string :type, null: false
 
       t.timestamps
     end
