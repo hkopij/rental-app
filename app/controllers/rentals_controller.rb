@@ -2,22 +2,19 @@
 
 class RentalsController < ApplicationController
   before_action :authenticate
-  before_action :set_rental, only: :create
+  before_action :set_rental,
+                :validate_user,
+                :validate_car,
+                :validate_rental_dates,
+                only: :create
 
   def index
     @rentals = Rental.all
   end
 
   def create
-    if current_user.can_create_rentals?
-      # this method validates if logged user is owner of office that we want to
-      # create rental in, if so it validates if provided dates are available for
-      # new rental. If both validations passes - it creates new rental
-      validate_ownership_and_availiblity
-    else
-      render json: 'You are not allowed to create rental'.to_json,
-             status: :unprocessable_entity
-    end
+    @rental.save
+    render json: @rental
   end
 
   private
@@ -33,36 +30,22 @@ class RentalsController < ApplicationController
     @rental = Rental.new(rental_params)
   end
 
-  def validate_ownership_and_availiblity
-    if current_user.office == @rental.car.office
-      validate_availiblity
-    else
+  def validate_user
+    unless UserRentalCreationRights.new(current_user).is_current_user_owner_of_a_rental?
+      render json: 'You are not allowed to create rental'.to_json,
+             status: :unprocessable_entity
+    end
+  end
+
+  def validate_car
+    unless CarOwnership.new(current_user, @rental).car_belongs_to_user?
       render json: 'The car must belong to your office!'.to_json,
              status: :unprocessable_entity
     end
   end
 
-  def validate_availiblity
-    rentals = @rental.car.rentals.all
-    # case #1, car is rented inside of requested period
-    rentals_1 = rentals.where('rented_from <= ? AND rented_to >= ?',
-                                        @rental.rented_from, @rental.rented_to)
-    # case #2, car is rented at the beginning of requested period
-    rentals_2 = rentals.where('rented_from > ? AND rented_to >= ? AND rented_from <= ?',
-                                        @rental.rented_from, @rental.rented_to, @rental.rented_to)
-    # case #3, car is rented at the end of requested period
-    rentals_3 = rentals.where('rented_from <= ? AND rented_to <= ? AND rented_to > ?',
-                                        @rental.rented_from, @rental.rented_to, @rental.rented_from)
-    # case #4, car is rented for the whole time of requested period
-    rentals_4 = rentals.where('rented_from > ? AND rented_to < ?',
-                                        @rental.rented_from, @rental.rented_to)
-
-    rentals = rentals_1 + rentals_2 + rentals_3 + rentals_4
-
-    if rentals.empty?
-      @rental.save
-      render json: @rental
-    else
+  def validate_rental_dates
+    unless RentalDatesValidation.new(@rental).rental_available?
       render json: 'The car is already rented to someone else!'.to_json,
              status: :unprocessable_entity
     end
